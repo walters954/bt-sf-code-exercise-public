@@ -28,5 +28,6 @@ public with sharing class IncomingLeadHandler implements IHandleMessages {
      */
     public List<String> getSubscribedChannels() {
         // TODO: Complete this method
+        return null;
     }
 }
