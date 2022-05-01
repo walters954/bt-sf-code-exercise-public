@@ -74,7 +74,6 @@ public with sharing class PubSubService {
             for (IHandleMessages subscriber : subscribers){
                 subscriber.handleMessage(channel,data);
             }
-
         }
 
     }
