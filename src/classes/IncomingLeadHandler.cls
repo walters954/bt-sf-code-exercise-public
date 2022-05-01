@@ -2,9 +2,10 @@
  * @description An implementation of IHandleMessages which validates the passed in Lead and inserts it.
  */
 public with sharing class IncomingLeadHandler implements IHandleMessages {
-    @testVisible private static final String INCOMING_LEAD_CHANNEL = 'IncomingLeads';
-    @testVisible private static final String INVALID_LEAD_ERROR = 'The Lead specified is invalid.';
-    @testVisible private static final String CHANNEL_PARAM = 'channel';
+    @TestVisible private static final String INCOMING_LEAD_CHANNEL = 'IncomingLeads';
+    @TestVisible private static final String INVALID_LEAD_ERROR = 'The Lead specified is invalid.';
+    @TestVisible private static final String CHANNEL_PARAM = 'channel';
+    //@TestVisible private static final String DATA_PARAM = 'data';
 
     /**
      * @description Constructs an instance of IncomingLeadHandler.
@@ -19,7 +20,21 @@ public with sharing class IncomingLeadHandler implements IHandleMessages {
      * @throws ArgumentException if the lead is missing a FirstName.
      */
     public void handleMessage(String channel, Object data) {
-        // TODO: Complete this method
+
+        //check for nulls inside of channel and throw ArgumentNullException
+        ArgumentNullException.throwIfNull(channel, CHANNEL_PARAM);
+        //ArgumentNullException.throwIfNull(data, DATA_PARAM);
+        //TODO check if the record/object is what we are looking for
+
+        Lead messageLead = (Lead)data;
+
+        if (String.isBlank(messageLead.FirstName)){
+            throw new ArgumentException(INVALID_LEAD_ERROR);
+        }
+
+        insert messageLead;
+
+
     }
 
     /**
@@ -27,7 +42,9 @@ public with sharing class IncomingLeadHandler implements IHandleMessages {
      * @return A List<String> of channel names this implementation is subscribed to.
      */
     public List<String> getSubscribedChannels() {
-        // TODO: Complete this method
-        return null;
+
+        List<String> subChannels = new List<String>();
+        subChannels.add(INCOMING_LEAD_CHANNEL);
+        return subChannels;
     }
 }
